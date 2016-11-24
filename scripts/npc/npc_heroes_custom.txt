@@ -1,0 +1,35 @@
+// Dota Heroes File
+// NOTE: This is not for creating new heroes, this is for taking a currently existing hero as a template and overriding
+// the specified key-value combinations.  Use override_hero <hero_to_override> for this.
+"DOTAHeroes"
+{
+	//=================================================================================================================
+	// HERO: Templar Assassin
+	//=================================================================================================================
+	"npc_dota_hero_templar_assassin_template"
+	{
+		"override_hero"				"npc_dota_hero_templar_assassin"			// Hero to override
+		"Ability1"					"templar_assassin_refraction_holdout"		// Ability 1
+		"VisionNighttimeRange"		"1800"										// Range of vision at night time.
+		"ModelScale"                 "2" 
+	}
+	"npc_dota_hero_techies_new"
+	{
+		"override_hero"				"npc_dota_hero_techies"
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+		"AttributeBaseStrength"		"30"
+		"AttributeStrengthGain"		"2.4"
+		"AttributeBaseAgility"		"5"
+		//"AttributeAgilityGain" 		"1"
+		"AttributeBaseIntelligence" "50"
+		"AttributeIntelligenceGain" "5"
+		"MovementSpeed"				"300"
+		"StatusManaRegen"			"17"
+		"Ability2"					"wave_wrad"
+		"Ability3"					"suicide_attack"
+		"Ability4"					"black_chaos"
+		"Ability5"					"antitank_grenade"
+		"Ability6"					"meteor"
+		"Ability7"					""
+	}
+}

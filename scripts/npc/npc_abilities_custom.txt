@@ -1,0 +1,526 @@
+// Dota Heroes File
+"DOTAAbilities"
+{
+	"Version"		"1"
+
+	//=================================================================================================================
+	//==技能-自杀攻击
+	"suicide_attack"
+	{
+      	// 基础的定义，如果技能是单位目标还是无目标，单位目标的类型是什么
+      	//------------------------------------------------------------------------------------------
+     	"AbilityBehavior"                   "DOTA_ABILITY_BEHAVIOR_POINT"
+     	
+     	"AbilityUnitDamageType"      	"DAMAGE_TYPE_PHYSICAL"
+     	"BaseClass"                     "ability_datadriven"
+     	"AbilityTextureName"            "techies_suicide"    //图标
+     	"AbilityCastAnimation"          "ACT_DOTA_ATTACK_EVENT"
+     	"MaxLevel"						"4"
+      	// 施法前摇，如果技能行为(AbilityBehavior)是DOTA_ABILITY_BEHAVIOR_IMMEDIATE就无效了
+     	//-------------------------------------------------------------------------------------------
+     	"AbilityCastPoint"        "0.2 0.2 0.1 0.1"
+      	"AbilityCastRange"     "800" 
+      	//施法时间                    
+      	"AbilityChannelTime"		"0.5"
+      	// 技能CD        
+     	//-------------------------------------------------------------------------------------------
+     	"AbilityCooldown"                 "30.0 30.0 30.0 30.0"  //分别四个等级的CD
+
+     	// 技能施法所需魔法值
+     	//-------------------------------------------------------------------------------------------
+    	"AbilityManaCost"               "325 350 375 400"        
+    	
+    	"OnChannelSucceeded" //施法完成时
+    	{
+    		"Damage"
+    		{
+    			"Target"
+    			{
+    				"Types"			"DOTA_UNIT_TARGET_BASIC|DOTA_UNIT_TARGET_HERO"
+    				"Teams"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+    				"Flags"			"DOTA_UNIT_TARGET_FLAG_NONE"
+    				"Center"		"CASTER"
+    				"Radius"		"%radius" //范围
+    			}
+    			"Type"			"DAMAGE_TYPE_PHYSICAL"
+    			"Damage"		"%damage"
+			 }
+			 "Knockback"
+			 {
+				"Target"
+    			{
+    				"Types"			"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+    				"Teams"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+    				"Flags"			"DOTA_UNIT_TARGET_FLAG_NONE"
+    				"Center"		"CASTER"
+    				"Radius"		"%radius" //范围
+    			}
+    			"Center"		"CASTER"
+    			"Duration"		"0.5"
+    			"Distance"		"%radius*2"
+    			"Height"		"200"
+    			"IsFixedDistance"	"1"
+    			"ShouldStun"	"0"
+			 }
+			 "AttachEffect"
+			 {
+				"EffectName"	"particles\econ\items\techies\techies_arcana\techies_suicide_base_arcana.vpcf"
+				"EffectAttachType" "follow_chest"
+				"Target"                     "CASTER"
+			 }
+			 "FireSound"
+		  	{
+		  		"EffectName"	"Hero_Techies.Suicide"
+			   	"Target"		"CASTER"
+		  	}
+		  	"RunScript"
+      	{
+    			"ScriptFile"	"scripts/vscripts/myability.lua"
+    			"Function"		"myability_suicide_attack_2"
+    			"Target"		"POINT"
+       	}
+			
+    	}
+    	"OnSpellStart"
+    	{
+    		"RunScript"
+    		{
+    			"ScriptFile"	"scripts/vscripts/myability.lua"
+    			"Function"		"myability_suicide_attack"
+    			"Target"		"POINT"
+    		}
+
+    	}
+
+
+    	"AbilitySpecial"
+    	{
+    		"01"
+    		{
+    			"var_type"	"FIELD_INTEGER"
+    			"radius"	"200 225 275 300"
+    		}
+    		"02"
+    		{
+    			"var_type"	"FIELD_INTEGER"
+    			"damage"	"375 475 600 850"
+    		}
+    	}
+  }
+  //技能-投掷手雷
+  "antitank_grenade"
+  {
+      "AbilityBehavior"                   "DOTA_ABILITY_BEHAVIOR_POINT|DOTA_ABILITY_BEHAVIOR_AOE"
+      "AbilityUnitDamageType"       "DAMAGE_TYPE_PHYSICAL"
+      "BaseClass"                     "ability_datadriven"
+      "AbilityTextureName"            "techies_remote_mines"    //图标
+      "AbilityCastAnimation"          "ACT_DOTA_ATTACK_EVENT"
+      "MaxLevel"            "4"
+      "AoERadius"           "%radius"
+      // 施法前摇，如果技能行为(AbilityBehavior)是DOTA_ABILITY_BEHAVIOR_IMMEDIATE就无效了
+      //-------------------------------------------------------------------------------------------
+      "AbilityCastPoint"        "0.1 0.1 0.1 0.1"
+      "AbilityCastRange"     "800" 
+      //施法时间                    
+      //"AbilityChannelTime"    "0.5"
+      // 技能CD        
+      //-------------------------------------------------------------------------------------------
+      "AbilityCooldown"                 "2.0 1.8 1.6 1.4"  //分别四个等级的CD
+
+      // 技能施法所需魔法值
+      //-------------------------------------------------------------------------------------------
+      "AbilityManaCost"               "40 45 50 55"        
+      "OnSpellStart"
+      {
+          //"EffectName"         "particles\econ\items\techies\techies_arcana\techies_base_attack_arcana_a.vpcf"
+          "RunScript"
+          {
+              "ScriptFile"  "scripts/vscripts/myability.lua"
+              "Function"    "myability_antitank_grenade"
+              "Target"      "POINT" 
+          }
+          "FireSound"
+          {
+              "EffectName"  "Hero_Techies.Attack"
+              "Target"    "CASTER"
+          }
+      }
+      "AbilitySpecial"
+      {
+          "01"
+          {
+              "var_type"  "FIELD_INTEGER"
+              "radius"    "175 190 205 220"
+          }
+          "02"
+          {
+              "var_type"  "FIELD_INTEGER"
+              "damage"    "100 150 200 300"
+          }
+      }
+  }
+  //投掷手雷-子技能
+  "antitank_grenade_unit"
+  {
+      "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_PASSIVE"
+      "BaseClass"             "ability_datadriven"
+      "AbilityTextureName"    "skeleton_king_reincarnation"
+      "MaxLevel"              "8" 
+      "AbilityUnitDamageType"       "DAMAGE_TYPE_PHYSICAL"
+      "OnOwnerDied"
+      {
+          "Damage"
+          {
+                "Target"
+                {
+                    "Types"     "DOTA_UNIT_TARGET_BASIC|DOTA_UNIT_TARGET_HERO"
+                    "Teams"     "DOTA_UNIT_TARGET_TEAM_ENEMY"
+                    "Flags"     "DOTA_UNIT_TARGET_FLAG_NONE"
+                    "Center"    "CASTER"
+                    "Radius"    "%radius" //范围
+                }
+                "Type"    "DAMAGE_TYPE_PHYSICAL"
+                "Damage"     "%damage"
+          }
+          "Knockback"
+          {
+              "Target"
+              {
+                  "Types"     "DOTA_UNIT_TARGET_BASIC|DOTA_UNIT_TARGET_HERO"
+                  "Teams"     "DOTA_UNIT_TARGET_TEAM_ENEMY"
+                  "Flags"     "DOTA_UNIT_TARGET_FLAG_NONE"
+                  "Center"    "CASTER"
+                  "Radius"    "%radius" //范围
+              }
+              "Center"    "CASTER"
+              "Duration"    "0.4"
+              "Distance"    "%radius*2"
+              "Height"    "150"
+              "IsFixedDistance" "1"
+              "ShouldStun"  "0"
+          }
+      }
+      "AbilitySpecial"
+      {
+          "01"
+          {
+              "var_type"  "FIELD_INTEGER"
+              "radius"    "175 190 205 220 200 225 250 300"
+          }
+          "02"
+          {
+              "var_type"  "FIELD_INTEGER"
+              "damage"    "100 150 200 300 250 350 425 500"
+          }
+      }
+  }
+  //技能-流星炸弹
+  "meteor"
+  {
+      "AbilityBehavior"                   "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+      "AbilityUnitDamageType"       "DAMAGE_TYPE_PHYSICAL"
+      "BaseClass"                     "ability_datadriven"
+      "AbilityType"                   "DOTA_ABILITY_TYPE_ULTIMATE" //终极技能
+      "AbilityTextureName"            "rattletrap_rocket_flare"    //图标
+      "AbilityCastAnimation"          "ACT_DOTA_ATTACK_EVENT"
+      "MaxLevel"            "4"
+      "AoERadius"           "%radius"
+      // 施法前摇，如果技能行为(AbilityBehavior)是DOTA_ABILITY_BEHAVIOR_IMMEDIATE就无效了
+      //-------------------------------------------------------------------------------------------
+      "AbilityCastPoint"        "0.3 0.3 0.3 0.3"
+      "AbilityCastRange"     "800" 
+      //施法时间                    
+      //"AbilityChannelTime"    "0.5"
+      // 技能CD        
+      //-------------------------------------------------------------------------------------------
+      "AbilityCooldown"                 "50.0"  //分别四个等级的CD
+
+      // 技能施法所需魔法值
+      //-------------------------------------------------------------------------------------------
+      "AbilityManaCost"               "300 400 450 500"
+      "OnSpellStart"
+      {
+          "RunScript"
+          {
+              "ScriptFile"  "scripts/vscripts/myability.lua"
+              "Function"    "myability_meteor"
+              "Target"      "POINT"
+          }
+          "FireSound"
+          {
+              "EffectName"  "Hero_Techies.Attack"
+              "Target"    "CASTER"
+          }
+      }
+      "AbilitySpecial"
+      {
+          "01"
+          {
+              "var_type"  "FIELD_INTEGER"
+              "radius"    "800"
+          }
+          "02"
+          {
+              "var_type"  "FIELD_INTEGER"
+              "damage"    "250 350 425 500"
+          }
+      }
+  }
+  //技能-超声波守卫
+  "wave_wrad"
+  {
+      // 基础的定义，如果技能是单位目标还是无目标，单位目标的类型是什么
+        //------------------------------------------------------------------------------------------
+      "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_POINT"
+      "AbilityUnitDamageType"         "DAMAGE_TYPE_MAGICAL"
+      "BaseClass"                     "ability_datadriven"
+      "AbilityTextureName"            "techies_stasis_trap"    //图标
+      "AbilityCastAnimation"          "ACT_DOTA_ATTACK_EVENT"
+      "MaxLevel"            "4"
+        // 施法前摇，如果技能行为(AbilityBehavior)是DOTA_ABILITY_BEHAVIOR_IMMEDIATE就无效了
+      //-------------------------------------------------------------------------------------------
+      "AbilityCastPoint"        "0.3 0.3 0.3 0.3"
+        "AbilityCastRange"     "600" 
+        //施法时间                    
+        //"AbilityChannelTime"    "0.5"
+        // 技能CD        
+      //-------------------------------------------------------------------------------------------
+      "AbilityCooldown"                 "17.0 18.0 19.0 20.0"  //分别四个等级的CD
+
+      // 技能施法所需魔法值
+      //-------------------------------------------------------------------------------------------
+      "AbilityManaCost"               "150 200 240 280" 
+      "OnSpellStart"
+      {
+          "RunScript"
+          {
+              "ScriptFile"  "scripts/vscripts/myability.lua"
+              "Function"    "myability_wave_wrad"
+              "Target"      "POINT"
+          }
+          "FireSound"
+          {
+              "EffectName"      "Hero_Techies.StasisTrap.Plant"
+              "Target"          "CASTER"
+          }
+      }
+      "AbilitySpecial"
+      {
+          "01"
+          {
+              "var_type"  "FIELD_INTEGER"
+              "radius"    "600 700 800 900"
+          }
+          "02"
+          {
+              "var_type"  "FIELD_INTEGER"
+              "damage"    "25 50 100 150"
+          }
+          "03"
+          {
+              "var_type"  "FIELD_FLOAT"
+              "duration_time" "1.0 1.5 2.0 2.5"
+          }
+      }
+  }
+  //技能-超声波守卫-子技能
+  "wave_wrad_unit"
+  {
+      "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_POINT"
+      "AbilityUnitDamageType"         "DAMAGE_TYPE_MAGICAL"
+      "BaseClass"                     "ability_datadriven"
+      "AbilityTextureName"            "techies_stasis_trap"    //图标
+      "MaxLevel"            "4"
+        // 施法前摇，如果技能行为(AbilityBehavior)是DOTA_ABILITY_BEHAVIOR_IMMEDIATE就无效了
+      //-------------------------------------------------------------------------------------------
+      "AbilityCastRange"     "600"
+      "OnSpellStart"
+      {
+          "LinearProjectile"
+          {
+              "EffectName"        "particles\units\heroes\hero_invoker\invoker_deafening_blast.vpcf"
+              "MoveSpeed"         "800" //发射速率
+              "StartRadius"       "200"   //获取的开始范围
+              "EndRadius"         "200" //获取的终止范围
+              "FixedDistance"     "%radius"   //距离
+              "StartPosition"     "CASTER"
+              "HasFrontalCone"                "0"
+              "ProvidesVision"        "1"
+              "VisionRadius"                "500"
+              "TargetTeams"                "DOTA_UNIT_TARGET_TEAM_ENEMY"
+              "TargetTypes"                "DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+              "TargetFlags"                "DOTA_UNIT_TARGET_FLAG_NONE"
+          }
+          "FireSound"
+          {
+              "EffectName"      "Hero_Invoker.DeafeningBlast"
+              "Target"          "CASTER"
+          }
+      }
+      "OnProjectileHitUnit"
+      {
+          "Damage"
+          {
+              "Type"    "DAMAGE_TYPE_MAGICAL"
+              "Damage"  "%damage"
+              "Target"  "TARGET"
+          }
+          "Knockback"
+          {
+              "Target"    "TARGET"
+              "Center"    "CASTER"
+              "Duration"    "%duration_time"
+              "Distance"    "%duration_time*200"
+              "Height"    "0"
+              "IsFixedDistance" "0"
+              "ShouldStun"  "1"
+          }
+          "ApplyModifier"
+          {
+              "Target"    "TARGET"
+              "ModifierName"    "modifiers_effect"
+          }
+      }
+      "Modifiers"
+      {
+          "modifiers_effect"
+          {
+              "Duration"    "%duration_time" //buff持续时间
+              "OnCreated"
+              {
+                  "AttachEffect"
+                  {
+                        "EffectName"  "particles\units\heroes\hero_invoker\invoker_deafening_blast_knockback_debuff.vpcf"
+                        "EffectAttachType" "follow_chest"
+                        "Target"                     "TARGET"
+                  }
+              }
+          }
+      }
+      "AbilitySpecial"
+      {
+          "01"
+          {
+              "var_type"  "FIELD_INTEGER"
+              "radius"    "600 700 800 900"
+          }
+          "02"
+          {
+              "var_type"  "FIELD_INTEGER"
+              "damage"    "25 50 100 150"
+          }
+          "03"
+          {
+              "var_type"  "FIELD_FLOAT"
+              "duration_time" "1.0 1.5 2.0 2.5"
+          }
+      }
+  }
+  //技能-混乱黑洞
+  "black_chaos"
+  {
+      "AbilityBehavior"                   "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+      "AbilityUnitDamageType"         "DAMAGE_TYPE_MAGICAL"
+      "BaseClass"                     "ability_datadriven"
+      "AbilityTextureName"            "enigma_black_hole"    //图标
+      "AbilityCastAnimation"          "ACT_DOTA_ATTACK_EVENT"
+      "MaxLevel"                      "4"
+      "RequiredLevel"                 "10"
+      "LevelsBetweenUpgrades"         "2"
+      "AoERadius"           "%radius"
+      // 施法前摇，如果技能行为(AbilityBehavior)是DOTA_ABILITY_BEHAVIOR_IMMEDIATE就无效了
+      //-------------------------------------------------------------------------------------------
+      "AbilityCastPoint"        "0.5 0.5 0.5 0.5"
+      "AbilityCastRange"     "800" 
+      //施法时间                    
+      //"AbilityChannelTime"    "0.5"
+      // 技能CD        
+      //-------------------------------------------------------------------------------------------
+      "AbilityCooldown"                 "80.0"  //分别四个等级的CD
+
+      // 技能施法所需魔法值
+      //-------------------------------------------------------------------------------------------
+      "AbilityManaCost"               "500 575 650 700"
+      "OnSpellStart"
+      {
+          "ApplyModifier"
+          {
+              "Target"
+              {
+                  "Types"     "DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+                  "Teams"     "DOTA_UNIT_TARGET_TEAM_ENEMY"
+                  "Flags"     "DOTA_UNIT_TARGET_FLAG_NONE"
+                  "Center"    "POINT"
+                  "Radius"    "%radius" //范围
+              }
+              "ModifierName"    "modifiers_black_chaos"
+          }
+          "RunScript"
+          {
+              "ScriptFile"  "scripts/vscripts/myability.lua"
+              "Function"    "myability_black_chaos"
+              "Target"      "POINT"
+          }
+      }
+      "Modifiers"
+      {
+          "modifiers_black_chaos"
+          {
+              "Duration"    "%duration_time" //buff持续时间
+              "OnCreated"
+              {
+                  "AttachEffect"
+                  {
+                        "EffectName"  "particles\units\heroes\hero_bane\bane_enfeeble.vpcf"
+                        "EffectAttachType" "follow_chest"
+                        "Target"
+                        {
+                            "Types"     "DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+                            "Teams"     "DOTA_UNIT_TARGET_TEAM_ENEMY"
+                            "Flags"     "DOTA_UNIT_TARGET_FLAG_NONE"
+                            "Center"    "POINT"
+                            "Radius"    "%radius" //范围
+                        }
+                  }
+              }
+          }
+      }
+      "AbilitySpecial"
+      {
+          "01"
+          {
+              "var_type"  "FIELD_INTEGER"
+              "radius"    "500"
+          }
+          "02"
+          {
+              "var_type"  "FIELD_INTEGER"
+              "damage"    "70 95 120 145"
+          }
+          "03"
+          {
+              "var_type"  "FIELD_FLOAT"
+              "duration_time"    "5.5"
+          }
+      }
+  }
+  //技能 自动获取经验和金钱
+  "auto_exp_gold"
+  {
+      "AbilityBehavior"         "DOTA_ABILITY_BEHAVIOR_PASSIVE"
+      "BaseClass"               "ability_datadriven"
+      "Modifiers"
+      {
+          "Passive"     "1"
+          "OnCreated"
+          {
+              "RunScript"
+              {
+                  "ScriptFile"  "scripts/vscripts/myability.lua"
+                  "Function"    "myability_auto_exp_gold"
+                  "Target"      "CASTER"
+              }
+          }
+      }
+  }
+}

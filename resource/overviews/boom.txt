@@ -1,0 +1,8 @@
+boom
+{
+	material materials/overviews/boom.vmat
+	pos_x -237
+	pos_y 8183
+	scale 8.223
+}
+
